@@ -105,7 +105,7 @@ class Program
     {
         foreach (var p in produtos)
         {
-            if (p.Nome.Equals(nome, StringComparison.OrdinalIgnoreCase))
+            if (p.Nome.Equals(nome.Trim(), StringComparison.OrdinalIgnoreCase))
             {
                 return p;
             }
