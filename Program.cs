@@ -19,6 +19,10 @@ class Program
         {
             Console.WriteLine("\nEncontrado: " + encontrado);
         }
+
+        RemoverPorNome("borracha");
+        Console.WriteLine("\nApos remover a borracha:");
+        ListarProdutos();
     }
 
     static void AdicionarProduto(string nome, decimal preco, int quantidade)
@@ -45,5 +49,16 @@ class Program
             }
         }
         return null;
+    }
+
+    static bool RemoverPorNome(string nome)
+    {
+        var produto = BuscarPorNome(nome);
+        if (produto == null)
+        {
+            return false;
+        }
+        produtos.Remove(produto);
+        return true;
     }
 }
