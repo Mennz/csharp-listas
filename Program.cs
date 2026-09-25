@@ -6,23 +6,82 @@ class Program
 
     static void Main(string[] args)
     {
-        Console.WriteLine("Cadastro de produtos");
-
         AdicionarProduto("Caneta", 2.50m, 100);
         AdicionarProduto("Caderno", 15.90m, 30);
         AdicionarProduto("Borracha", 1.20m, 200);
 
-        ListarProdutos();
-
-        var encontrado = BuscarPorNome("caderno");
-        if (encontrado != null)
+        bool rodando = true;
+        while (rodando)
         {
-            Console.WriteLine("\nEncontrado: " + encontrado);
-        }
+            MostrarMenu();
+            var opcao = Console.ReadLine();
 
-        RemoverPorNome("borracha");
-        Console.WriteLine("\nApos remover a borracha:");
-        ListarProdutos();
+            switch (opcao)
+            {
+                case "1":
+                    ListarProdutos();
+                    break;
+                case "2":
+                    CadastrarNovoProduto();
+                    break;
+                case "3":
+                    BuscarEMostrar();
+                    break;
+                case "4":
+                    RemoverEMostrar();
+                    break;
+                case "0":
+                    rodando = false;
+                    break;
+                default:
+                    Console.WriteLine("Opcao invalida");
+                    break;
+            }
+        }
+    }
+
+    static void MostrarMenu()
+    {
+        Console.WriteLine("\n--- Cadastro de produtos ---");
+        Console.WriteLine("1 - Listar");
+        Console.WriteLine("2 - Adicionar");
+        Console.WriteLine("3 - Buscar por nome");
+        Console.WriteLine("4 - Remover por nome");
+        Console.WriteLine("0 - Sair");
+        Console.Write("Escolha: ");
+    }
+
+    static void CadastrarNovoProduto()
+    {
+        Console.Write("Nome: ");
+        var nome = Console.ReadLine() ?? "";
+
+        Console.Write("Preco: ");
+        decimal.TryParse(Console.ReadLine(), out decimal preco);
+
+        Console.Write("Quantidade: ");
+        int.TryParse(Console.ReadLine(), out int quantidade);
+
+        AdicionarProduto(nome, preco, quantidade);
+        Console.WriteLine("Produto adicionado");
+    }
+
+    static void BuscarEMostrar()
+    {
+        Console.Write("Nome a buscar: ");
+        var nome = Console.ReadLine() ?? "";
+
+        var produto = BuscarPorNome(nome);
+        Console.WriteLine(produto != null ? produto.ToString() : "Nao encontrado");
+    }
+
+    static void RemoverEMostrar()
+    {
+        Console.Write("Nome a remover: ");
+        var nome = Console.ReadLine() ?? "";
+
+        var removeu = RemoverPorNome(nome);
+        Console.WriteLine(removeu ? "Removido" : "Nao encontrado");
     }
 
     static void AdicionarProduto(string nome, decimal preco, int quantidade)
@@ -32,6 +91,10 @@ class Program
 
     static void ListarProdutos()
     {
+        if (produtos.Count == 0)
+        {
+            Console.WriteLine("Nenhum produto cadastrado");
+        }
         foreach (var p in produtos)
         {
             Console.WriteLine(p);
@@ -40,7 +103,6 @@ class Program
 
     static Produto? BuscarPorNome(string nome)
     {
-        // ignora maiuscula/minuscula na busca
         foreach (var p in produtos)
         {
             if (p.Nome.Equals(nome, StringComparison.OrdinalIgnoreCase))
